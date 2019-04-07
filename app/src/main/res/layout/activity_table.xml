@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TableActivity">
+
+    <LinearLayout
+        android:id="@+id/table_linear"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:id="@+id/table_pager"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:id="@+id/line1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_margin="2dp"
+                android:text="框框1" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_margin="2dp"
+                android:text="框框2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:layout_margin="2dp"
+                android:text="框框框1" />
+
+            <TextView
+                android:layout_margin="2dp"
+                android:text="框框框2" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
