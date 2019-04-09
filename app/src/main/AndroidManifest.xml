@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ExpandableActivity"></activity>
+        <activity android:name=".SqliteActivity"></activity>
+        <activity android:name=".ExpandableActivity" />
         <activity android:name=".TableActivity" />
         <activity android:name=".SpinnerActivity" />
         <activity android:name=".Main2Activity" />

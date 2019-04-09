@@ -20,6 +20,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,12 +69,17 @@ public class MainActivity extends AppCompatActivity {
     List<String> titles = new ArrayList<>();
     List<View> views = new ArrayList<>();
     List<Integer> list = new ArrayList<>();
+    String[] label = new String[]{"第一季度","第二季度","第三季第","第四季度"};
+    float[] data = new float[]{7815f,14063f,21035f,28228f};
+    String miaoshu = "累计值(元)";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().setStatusBarColor(getColor(R.color.colorAccent));
 
 
         diaLog();
@@ -188,9 +196,10 @@ public class MainActivity extends AppCompatActivity {
         tablayout = findViewById(R.id.tablayout);
         viewpager = findViewById(R.id.viewpager);
 
-        list.add(Color.parseColor("#00b8a9"));
-        list.add(Color.parseColor("#4300a1"));
-        list.add(Color.parseColor("#b8a900"));
+        list.add(Color.parseColor("#97a1a7"));
+        list.add(Color.parseColor("#006bb7"));
+        list.add(Color.parseColor("#e1d2f6"));
+        list.add(Color.parseColor("#e0d668"));
 
 
         //折线图
@@ -216,22 +225,38 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setPieView() {
         List<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(30.8f, "三月"));
-        pieEntries.add(new PieEntry(50.8f, "四月"));
-        pieEntries.add(new PieEntry(60.8f, "五月"));
+       for (int i =0;i<data.length;i++){
+           pieEntries.add(new PieEntry(data[i],label[i]));
+       }
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "描述");
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,"");
 
 
-        pieDataSet.setValueTextColor(Color.parseColor("#fff000"));
+       // pieDataSet.setValueTextColor(Color.parseColor("#fff000"));
 
         pieDataSet.setColors(list);
 
 
         PieData pieData = new PieData(pieDataSet);
+        pieData.setValueTextSize(10);
+        pieData.setValueTextColor(Color.parseColor("#ffffff"));
 
+        final DecimalFormat decimalFormat = new DecimalFormat("###,#0.0");
 
+        pieData.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return decimalFormat.format(value) + "%";
+            }
+        });
         pieChart.setData(pieData);
+        pieChart.setUsePercentValues(true);
+        pieChart.setHoleRadius(0f);
+        pieChart.setTransparentCircleRadius(0f);
+        Description description = new Description();
+        description.setText("");
+        pieChart.setDescription(description);
+
 
 
     }
@@ -241,21 +266,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setBarChart() {
         List<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, new float[]{2, 4, 5}));
-        barEntries.add(new BarEntry(2, 4));
-        barEntries.add(new BarEntry(3, 5));
-        barEntries.add(new BarEntry(4, 5));
+       for (int i=0;i<data.length;i++){
+           barEntries.add(new BarEntry(i,data[i]));
+       }
 
-        String[] bsrXdata = new String[]{"第一季度", "第二季度", "第三季度", "第四季度"};
-
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "描述");
+        BarDataSet barDataSet = new BarDataSet(barEntries,miaoshu);
 
         barDataSet.setColors(list);
 
         BarData barData = new BarData(barDataSet);
+        barData.setValueTextSize(10);
 
-        barData.setBarWidth(0.9f);
+       // barData.setBarWidth(0.9f);
 
         barChart.setData(barData);
         barChart.setFitBars(true);
@@ -267,6 +289,16 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+        xAxis.setLabelCount(data.length);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return label[(int) value];
+            }
+        });
+        YAxis yAxis = barChart.getAxisRight();
+       yAxis.setDrawLabels(false);
+
     }
 
     /**
@@ -276,19 +308,18 @@ public class MainActivity extends AppCompatActivity {
 
         //创建数据集，并添加数据
         List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 9));
-        entries.add(new Entry(2, 7));
-        entries.add(new Entry(3, 9));
-        entries.add(new Entry(4, 3));
+        for (int i=0;i<data.length;i++){
+            entries.add(new Entry(i,data[i]));
+        }
 
         //将数据集转化为一条数据对象
-        LineDataSet dataSet = new LineDataSet(entries, "数据一");
+        LineDataSet dataSet = new LineDataSet(entries, "居民人均可支配收入");
 
         //设置数据对象的参数
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(10);
-        dataSet.setCircleColor(Color.parseColor("#ff00ff"));
-        dataSet.setLineWidth(8);
+
+        dataSet.setLineWidth(2);
 
         //将一条或多条数据对象整合
         LineData lineData = new LineData(dataSet);
@@ -299,20 +330,18 @@ public class MainActivity extends AppCompatActivity {
 
         //添加描述
         Description description = new Description();
-        description.setText("描述");
+        description.setText(miaoshu);
         lineChart.setDescription(description);
 
         //刷新图表
         lineChart.invalidate();
-
-        final String[] quarters = new String[]{"一月", "二月", "三月", "四月"};
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return quarters[(int) value - 1];
+                return label[(int) value ];
             }
         });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -332,10 +361,12 @@ public class MainActivity extends AppCompatActivity {
         yAxis1.setDrawGridLines(false);
         yAxis1.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value) {
-                return "" + value;
+            public String getAxisLabel(float value, AxisBase axis) {
+                DecimalFormat decimalFormat = new DecimalFormat("#0.0");
+                return decimalFormat.format (value/10000) + "万";
             }
         });
+
     }
 
     /**
