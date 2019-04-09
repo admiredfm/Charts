@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="2019年消费情况"
+        android:text="2018年居民人均可支配收入"
         android:textSize="20sp"
         android:background="@color/main"
         android:textColor="#fff"
