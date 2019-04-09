@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, "弹窗", Toast.LENGTH_SHORT).show();
 
-       // diaLog();
+        diaLog();
         getDate();
         initView();
         setTablayout();
