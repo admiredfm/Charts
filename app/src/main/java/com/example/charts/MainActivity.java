@@ -81,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setStatusBarColor(getColor(R.color.colorAccent));
 
+        Toast.makeText(this, "弹窗", Toast.LENGTH_SHORT).show();
 
-        diaLog();
+       // diaLog();
         getDate();
         initView();
         setTablayout();
