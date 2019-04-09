@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 通知
+     * 通知通知通知
      */
     private void tongzhi() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
